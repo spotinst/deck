@@ -44,7 +44,6 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
           cancelLoader();
           details.account = serverGroup.accountId;
           this.serverGroup = details;
-          // debugger
           this.elastigroupId = this.serverGroup.elastigroup.id;
         });
       };
