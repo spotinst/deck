@@ -47,11 +47,23 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
           this.elastigroupId = this.serverGroup.elastigroup.id;
         });
       };
+      /////////////////////////////////////////////////////////
+      // scaling policy creation
+      /////////////////////////////////////////////////////////
+      this.openCreateScalingPolicyModal = () => {
+        $uibModal.open({
+          templateUrl: require('./scalingPolicy/scalingPolicyCreation.html'),
+          controller: 'spotScalingPolicyCreationCtrl as ctrl',
+          resolve: {
+            serverGroup: () => this.serverGroup,
+            application: () => app,
+          },
+        });
+      };
 
       ////////////////////////////////////////////////////////////
       // Actions. Triggered by server group details dropdown menu
       ////////////////////////////////////////////////////////////
-
       this.resizeServerGroup = () => {
         $uibModal.open({
           templateUrl: require('./resize/resizeServerGroup.html'),

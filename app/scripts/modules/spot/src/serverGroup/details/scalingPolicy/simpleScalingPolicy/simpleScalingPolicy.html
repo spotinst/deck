@@ -1,0 +1,144 @@
+<div modal-page class="scaling-policy-modal form-inline">
+  <task-monitor monitor="taskMonitor"></task-monitor>
+  <form role="form" name="spotSimpleScalingPolicyForm" novalidate>
+    <modal-close dismiss="$dismiss()"></modal-close>
+    <div class="modal-header">
+      <h4 class="modal-title">{{ctrl.action}} scaling policy</h4>
+    </div>
+    <div class="modal-body">
+      <h4 class="section-heading">Conditions</h4>
+      <div class="section-body">
+        <div class="row" style="margin-bottom: 10px;">
+          <div class="col-md-2 sm-label-right">Whenever</div>
+          <select
+            class="form-control input-sm"
+            name="statistic"
+            ng-model="defaultStatistic"
+            ng-options="stat as stat.label for stat in statisticOptions track by stat.value"
+            required
+          >
+          </select>
+          <span class="input-label">
+            of
+          </span>
+          <select
+            class="form-control input-sm"
+            name="metricName"
+            ng-model="defaultMetricName"
+            ng-options="metricName as metricName.label for metricName in metricNameOptions track by metricName.value"
+            required
+          >
+          </select>
+        </div>
+        <div class="row" style="margin-bottom: 10px;">
+          <div class="col-md-2 sm-label-right">is</div>
+          <select
+            class="form-control input-sm"
+            name="operator"
+            ng-model="defaultOperator"
+            ng-options="operator as operator.label for operator in operatorOptions track by operator.value"
+          >
+          </select>
+          <input
+            type="number"
+            name="threshold"
+            style="width: 60px"
+            class="form-control input-sm"
+            required
+            ng-model="defaultThreshold"
+          />
+          <span class="input-label">
+            percents
+          </span>
+        </div>
+        <div class="row" style="margin-bottom: 10px;">
+          <div class="col-md-2 sm-label-right">for at least</div>
+          <input
+            type="number"
+            name="evaluationPeriods"
+            style="width: 60px"
+            class="form-control input-sm"
+            required
+            ng-model="defaultEvaluationPeriod"
+          />
+          <span class="input-label">
+            consecutive periods of
+          </span>
+          <select
+            class="form-control input-sm"
+            name="period"
+            ng-model="defaultPeriod"
+            ng-options="period as period.label for period in periodOptions track by period.value"
+          >
+          </select>
+        </div>
+      </div>
+
+      <h4 class="section-heading">Actions</h4>
+      <div class="section-body">
+        <div class="row" style="margin-bottom: 10px;">
+          <select
+            class="form-control input-sm"
+            name="action"
+            ng-model="defaultAction"
+            ng-options="action as action.label for action in actionOptions track by action.value"
+          >
+          </select>
+          <input
+            type="number"
+            name="adjustment"
+            style="width: 60px"
+            class="form-control input-sm"
+            required
+            ng-model="defaultAmountOfInstances"
+          />
+          <span class="input-label">
+            instances
+          </span>
+        </div>
+      </div>
+
+      <h4 class="section-heading">Additional Settings</h4>
+      <div class="section-body">
+        <div class="row">
+          <div class="col-md-2 sm-label-right">Warmup</div>
+          <div class="col-md-10 content-fields">
+            <span class="form-control-static select-placeholder">Instances need</span>
+            <input
+              type="number"
+              name="cooldown"
+              style="width: 60px"
+              class="form-control input-sm"
+              required
+              ng-model="defaultCoolDown"
+            />
+            <span class="input-label">
+              seconds to warm up
+            </span>
+          </div>
+        </div>
+
+        <div class="row" style="margin-bottom: 10px;">
+          <div class="col-md-2 sm-label-right">Policy Name</div>
+          <div class="col-md-10 content-fields">
+            <input
+              type="string"
+              name="policyName"
+              style="width: 180px"
+              class="form-control input-sm"
+              ng-model="defaultPolicyName"
+              required
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <spot-footer
+      action="ctrl.submitSimpleScalingPolicy()"
+      cancel="ctrl.cancel()"
+      is-valid="ctrl.isValid()"
+      account="serverGroup.account"
+      verification="verification"
+    ></spot-footer>
+  </form>
+</div>

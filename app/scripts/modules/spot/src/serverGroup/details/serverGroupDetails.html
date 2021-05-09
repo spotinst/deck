@@ -98,5 +98,12 @@
         <dd ng-repeat="type in ctrl.serverGroup.elastigroup.compute.instanceTypes.spot">{{type}}</dd>
       </dl>
     </collapsible-section>
+    <collapsible-section heading="Scaling Policies">
+      <ul>
+        <li>
+          <a href ng-click="ctrl.openCreateScalingPolicyModal()">Create new scaling policy</a>
+        </li>
+      </ul>
+    </collapsible-section>
   </div>
 </div>
