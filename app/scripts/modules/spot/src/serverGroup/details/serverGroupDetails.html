@@ -114,11 +114,7 @@
           {{ctrl.serverGroup.elastigroup.compute.launchSpecification.iamRole.arn}}
         </dd>
 
-        <small
-          ><dt ng-if="ctrl.serverGroup.elastigroup.compute.launchSpecification.securityGroupIds">
-            Security Groups
-          </dt></small
-        >
+        <dt ng-if="ctrl.serverGroup.elastigroup.compute.launchSpecification.securityGroupIds">Security<br />Groups</dt>
         <dd ng-repeat="sg in ctrl.serverGroup.elastigroup.compute.launchSpecification.securityGroupIds">{{sg}}</dd>
       </dl>
     </collapsible-section>
