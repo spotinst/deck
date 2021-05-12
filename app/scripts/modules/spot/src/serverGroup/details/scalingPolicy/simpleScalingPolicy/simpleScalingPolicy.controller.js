@@ -163,7 +163,7 @@ module(SPOT_SERVERGROUP_DETAILS_SCALINGPOLICY_SIMPLE_CONTROLLER, [SERVER_GROUP_W
         });
 
         const submitMethod = function() {
-          return ScalingPolicyWriter.updateScalingPolicy(serverGroup, command);
+          return ScalingPolicyWriter.updateScalingPolicy(application, command);
         };
 
         $scope.taskMonitor.submit(submitMethod);
