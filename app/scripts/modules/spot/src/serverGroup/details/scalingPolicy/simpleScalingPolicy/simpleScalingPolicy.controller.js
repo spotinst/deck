@@ -192,7 +192,7 @@ module(SPOT_SERVERGROUP_DETAILS_SCALINGPOLICY_SIMPLE_CONTROLLER, [SERVER_GROUP_W
 
         $scope.taskMonitor = new TaskMonitor({
           application: application,
-          title: 'Update scaling policy in ' + serverGroup.name,
+          title: action + ' scaling policy in ' + serverGroup.name,
           modalInstance: $uibModalInstance,
         });
 
