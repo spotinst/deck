@@ -1,6 +1,7 @@
 'use strict';
 
 import { module } from 'angular';
+import { cloneDeep } from 'lodash';
 
 import { SERVER_GROUP_WRITER, TaskMonitor } from '@spinnaker/core';
 import { ScalingPolicyWriter } from '../ScalingPolicyWriter';
@@ -19,6 +20,8 @@ module(SPOT_SERVERGROUP_DETAILS_SCALINGPOLICY_SIMPLE_CONTROLLER, [SERVER_GROUP_W
     function($scope, $uibModalInstance, action, serverGroup, application) {
       this.action = action;
       this.serverGroup = serverGroup;
+
+      $scope.scalingUpActions = [];
 
       $scope.statisticOptions = [
         {
@@ -48,14 +51,20 @@ module(SPOT_SERVERGROUP_DETAILS_SCALINGPOLICY_SIMPLE_CONTROLLER, [SERVER_GROUP_W
         {
           label: 'EC2 - CPU Utilization',
           value: 'CPUUtilization',
+          namespace: 'AWS/EC2',
+          unit: 'percent',
         },
         {
           label: 'EC2 - Network Out',
           value: 'NetworkOut',
+          namespace: 'AWS/EC2',
+          unit: 'bytes',
         },
         {
           label: 'ELB - Latency',
           value: 'Latency',
+          namespace: 'AWS/ELB',
+          unit: 'seconds',
         },
       ];
       $scope.defaultMetricName = $scope.metricNameOptions[0];
@@ -103,37 +112,62 @@ module(SPOT_SERVERGROUP_DETAILS_SCALINGPOLICY_SIMPLE_CONTROLLER, [SERVER_GROUP_W
         },
       ];
       $scope.defaultPeriod = $scope.periodOptions[0];
+      const actionsDict = {
+        add: { scalingAction: 'up', type: 'adjustment' },
+        remove: { scalingAction: 'down', type: 'adjustment' },
+        increase: { scalingAction: 'up', type: 'percentageAdjustment' },
+        decrease: { scalingAction: 'down', type: 'percentageAdjustment' },
+        setMinTarget: { scalingAction: 'up', type: 'setMinTarget' },
+        setMaxTarget: { scalingAction: 'down', type: 'setMaxTarget' },
+      };
+      const metricDict = {
+        CPUUtilization: { unit: 'percent', namespace: 'AWS/EC2' },
+        NetworkOut: { unit: 'bytes', namespace: 'AWS/EC2' },
+        Latency: { unit: 'seconds', namespace: 'AWS/ELB' },
+      };
 
       $scope.actionOptions = [
         {
           label: 'Add',
           value: 'add',
+          scalingAction: 'up',
+          type: 'adjustment',
         },
         {
           label: 'Remove',
           value: 'remove',
+          scalingAction: 'down',
+          type: 'adjustment',
         },
         {
           label: 'Increase',
           value: 'increase',
+          scalingAction: 'up',
+          type: 'percentageAdjustment',
         },
         {
           label: 'Decrease',
           value: 'decrease',
+          scalingAction: 'down',
+          type: 'percentageAdjustment',
         },
         {
           label: 'Set minimum of',
           value: 'setMinTarget',
+          scalingAction: 'up',
+          type: 'setMinTarget',
         },
         {
           label: 'Set maximum of',
           value: 'setMaxTarget',
+          scalingAction: 'down',
+          type: 'setMaxTarget',
         },
       ];
       $scope.defaultAction = $scope.actionOptions[0];
 
       $scope.defaultThreshold = 50;
-      $scope.defaultAmountOfInstances = 1;
+      $scope.defaultAmount = 1;
       $scope.defaultEvaluationPeriod = 3;
       $scope.defaultCoolDown = 300;
 
@@ -169,7 +203,7 @@ module(SPOT_SERVERGROUP_DETAILS_SCALINGPOLICY_SIMPLE_CONTROLLER, [SERVER_GROUP_W
         $scope.taskMonitor.submit(submitMethod);
       };
 
-      function buildUpdateScalingPolicyCommand(policyConfigForSdk) {
+      function buildUpdateScalingPolicyCommand(groupJson) {
         return {
           type: 'updateElastigroup',
           cloudProvider: 'spot',
@@ -177,21 +211,51 @@ module(SPOT_SERVERGROUP_DETAILS_SCALINGPOLICY_SIMPLE_CONTROLLER, [SERVER_GROUP_W
           region: serverGroup.region,
           serverGroupName: serverGroup.name,
           elastigroupId: serverGroup.elastigroup.id,
-          groupToUpdate: { group: { scaling: { up: [policyConfigForSdk] } } },
+          groupToUpdate: groupJson,
         };
       }
 
       function buildPolicyConfigForApi(formPolicyConfig) {
-        const retVal = formPolicyConfig;
+        let retVal;
+
         const actionFromForm = formPolicyConfig.action;
-        if (actionFromForm === 'add') {
-          retVal.action = {
-            type: 'adjustment',
-            adjustment: formPolicyConfig.adjustment,
+        const metricFromForm = formPolicyConfig.metricName;
+        const scalingAction = actionsDict[actionFromForm].scalingAction;
+        const policyConfig = cloneDeep(formPolicyConfig);
+
+        policyConfig.namespace = metricDict[metricFromForm].namespace;
+        policyConfig.unit = metricDict[metricFromForm].unit;
+
+        if (
+          actionFromForm === 'add' ||
+          actionFromForm === 'remove' ||
+          actionFromForm === 'increase' ||
+          actionFromForm === 'decrease'
+        ) {
+          policyConfig.action = {
+            type: actionsDict[actionFromForm].type,
+            adjustment: formPolicyConfig.amount,
           };
-          retVal.namespace = 'AWS/EC2';
-          retVal.unit = 'percent';
         }
+        if (actionFromForm === 'setMinTarget') {
+          policyConfig.action = {
+            type: actionsDict[actionFromForm].type,
+            minTargetCapacity: formPolicyConfig.amount,
+          };
+        }
+        if (actionFromForm === 'setMaxTarget') {
+          policyConfig.action = {
+            type: actionsDict[actionFromForm].type,
+            maxTargetCapacity: formPolicyConfig.amount,
+          };
+        }
+
+        if (scalingAction === 'up') {
+          retVal = { group: { scaling: { up: [policyConfig] } } };
+        } else if (scalingAction === 'down') {
+          retVal = { group: { scaling: { down: [policyConfig] } } };
+        }
+
         return retVal;
       }
 

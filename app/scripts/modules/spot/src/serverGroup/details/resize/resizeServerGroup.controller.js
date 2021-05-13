@@ -68,7 +68,6 @@ angular
         }
 
         const submitMethod = function() {
-          debugger;
           return serverGroupWriter.resizeServerGroup(serverGroup, application, {
             elastigroupId: serverGroup.elastigroup.id,
             capacity: capacity,
