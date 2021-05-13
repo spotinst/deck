@@ -57,8 +57,9 @@
         <dt>In</dt>
         <dd>
           <account-tag account="ctrl.serverGroup.account" pad="right"></account-tag>
-          {{ctrl.serverGroup.region}}
         </dd>
+        <dt>Region</dt>
+        <dd>{{ctrl.serverGroup.region}}</dd>
         <dt>Zones</dt>
         <dd ng-repeat="zone in ctrl.serverGroup.zones">{{zone}}</dd>
       </dl>
