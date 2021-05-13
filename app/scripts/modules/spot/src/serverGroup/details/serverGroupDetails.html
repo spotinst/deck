@@ -115,6 +115,7 @@
         </dd>
 
         <dt ng-if="ctrl.serverGroup.elastigroup.compute.launchSpecification.securityGroupIds">Security<br />Groups</dt>
+        <br />
         <dd ng-repeat="sg in ctrl.serverGroup.elastigroup.compute.launchSpecification.securityGroupIds">{{sg}}</dd>
       </dl>
     </collapsible-section>
