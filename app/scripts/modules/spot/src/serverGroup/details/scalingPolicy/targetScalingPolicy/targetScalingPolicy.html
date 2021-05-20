@@ -8,10 +8,10 @@
     <div class="modal-body">
       <h4 class="section-heading">Target Metric</h4>
       <div class="section-body">
-        <p>
-          Target scaling policies are autoscaling policies that track a specified metric relative to your desired target
-          value and automatically adjust your Elastigroup scale to meet this target.
-        </p>
+        <a href="https://docs.spot.io/elastigroup/features/scaling/target-scaling?id=target-scaling"
+          >Read more about Target Scaling Policy<br
+        /></a>
+        <br />
         <div name="policyName" class="row" style="margin-bottom: 10px;">
           <div class="col-md-2 sm-label-right">Policy Name</div>
           <div class="col-md-10 content-fields">
@@ -73,36 +73,34 @@
             </span>
           </div>
         </div>
-        <div name="predictionCheckbox" class="row" style="margin-bottom: 10px;">
-          <div class="col-md-2 sm-label-left">Use predictive autoscaling</div>
-          <div class="col-md-10 content-fields">
-            <input
-              type="checkbox"
-              name="predictiveAutoScaling"
-              class="form-control input-sm"
-              ng-model="defaultPrediction"
-            />
+        <div name="predictionCheckbox" class="row" style="margin-bottom: 10px; margin-left: 1px;">
+          <div class="col-md-4 sm-label-right">Use predictive autoscaling</div>
+          <div class="col-md-15 content-fields">
+            <input type="checkbox" name="predictiveAutoScaling" class="input-sm" ng-model="defaultPrediction" />
           </div>
-          <!--            <div ng-if="predictiveAutoScaling" class="col-md-2 sm-label-right">-->
-          <!--              <select-->
-          <!--                class='form-control input-sm'-->
-          <!--                name='predictionMode'-->
-          <!--                style="width: 160px; box-sizing: border-box"-->
-          <!--                ng-model='defaultPredictionMode'-->
-          <!--                ng-options='predictionMode as predictionMode.label for predictionMode in predictionModeOptions track by predictionMode.value'-->
-          <!--                required-->
-          <!--              >-->
-          <!--              </select>-->
-          <!--            </div>-->
+          <div ng-if="defaultPrediction==true" class="col-md-2 sm-label-right">
+            <div name="predictionMode" class="col-md-10 content-fields">
+              <select
+                type="String"
+                class="form-control input-sm"
+                style="width: 160px; box-sizing: border-box"
+                ng-model="defaultPredictionMode"
+                ng-options="predictionMode as predictionMode.label for predictionMode in predictionModeOptions track by predictionMode.value"
+                name="predictionMode"
+                required
+              >
+              </select>
+            </div>
+          </div>
         </div>
       </div>
+      <spot-footer
+        action="ctrl.submitTargetScalingPolicy()"
+        cancel="ctrl.cancel()"
+        is-valid="ctrl.isValid()"
+        account="serverGroup.account"
+        verification="verification"
+      ></spot-footer>
     </div>
-    <spot-footer
-      action="ctrl.submitTargetScalingPolicy()"
-      cancel="ctrl.cancel()"
-      is-valid="ctrl.isValid()"
-      account="serverGroup.account"
-      verification="verification"
-    ></spot-footer>
   </form>
 </div>

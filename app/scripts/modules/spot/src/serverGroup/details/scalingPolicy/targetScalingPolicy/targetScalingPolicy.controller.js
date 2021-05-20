@@ -31,40 +31,35 @@ module(SPOT_SERVERGROUP_DETAILS_SCALINGPOLICY_TARGET_CONTROLLER, [SERVER_GROUP_W
         {
           label: 'Average CPU Utilization (percentage)',
           value: 'CPUUtilization',
-          namespace: 'AWS/EC2',
-          unit: 'percent',
         },
         {
           label: 'Average Network In (bytes)',
           value: 'NetworkIn',
-          namespace: 'AWS/EC2',
-          unit: 'bytes',
         },
         {
           label: 'Average Network Out (bytes)',
           value: 'NetworkOut',
-          namespace: 'AWS/EC2',
-          unit: 'bytes',
         },
       ];
 
-      //      $scope.predictionModeOptions = [
-      //        {
-      //          label: 'Predict and scale',
-      //          value: 'FORECAST_AND_SCALE'
-      //        },
-      //        {
-      //          label: 'Predict only',
-      //          value: 'FORECAST_ONLY'
-      //        }
-      //      ];
+      $scope.predictionModeOptions = [
+        {
+          label: 'Predict and scale',
+          value: 'FORECAST_AND_SCALE',
+        },
+        {
+          label: 'Predict only',
+          value: 'FORECAST_ONLY',
+        },
+      ];
 
+      $scope.defaultPolicyName = 'default policy name';
       $scope.defaultMetricName = $scope.metricNameOptions[0];
       $scope.defaultTarget = 50;
       $scope.defaultCoolDown = 300;
-      $scope.defaultPolicyName = 'default policy name';
-      //      Sscope.defaultPrediction = false;
-      //      $scope.defaultMode = $scope.predictionModeOptions[0];
+      $scope.default;
+      $scope.defaultPrediction = false;
+      $scope.defaultMode = $scope.predictionModeOptions[0];
 
       this.cancel = function() {
         $uibModalInstance.close();
@@ -110,14 +105,30 @@ module(SPOT_SERVERGROUP_DETAILS_SCALINGPOLICY_TARGET_CONTROLLER, [SERVER_GROUP_W
 
       function buildPolicyConfigForApi(formPolicyConfig) {
         let retVal;
-
         const scalingAction = 'target';
-        const actionFromForm = formPolicyConfig.action;
         const metricFromForm = formPolicyConfig.metricName;
+
+        let isPredictionOnFromForm = false;
+        let predictionModeFromForm;
+        if (
+          formPolicyConfig.hasOwnProperty('predictiveAutoScaling') &&
+          formPolicyConfig.predictiveAutoScaling.includes('on')
+        ) {
+          isPredictionOnFromForm = true;
+          predictionModeFromForm = formPolicyConfig.predictionMode;
+          delete formPolicyConfig.predictiveAutoScaling;
+          delete formPolicyConfig.predictionMode;
+        }
+
         const policyConfig = cloneDeep(formPolicyConfig);
 
         policyConfig.namespace = metricDict[metricFromForm].namespace;
         policyConfig.unit = metricDict[metricFromForm].unit;
+        policyConfig.statistic = 'average';
+
+        if (isPredictionOnFromForm == true && predictionModeFromForm != '?') {
+          policyConfig.predictive = { mode: predictionModeFromForm };
+        }
 
         if (scalingAction === 'target') {
           retVal = { group: { scaling: { target: [policyConfig] } } };
