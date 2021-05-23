@@ -60,13 +60,20 @@ module(SPOT_SERVERGROUP_DETAILS_SCALINGPOLICY_TARGET_CONTROLLER, [SERVER_GROUP_W
       $scope.default;
       $scope.defaultPrediction = false;
       $scope.defaultMode = $scope.predictionModeOptions[0];
-
       this.cancel = function() {
         $uibModalInstance.close();
       };
 
       this.isValid = function() {
         return true;
+      };
+
+      this.isMetricCPUUtilization = function() {
+        if ($scope.defaultMetricName.value === 'CPUUtilization') {
+          return true;
+        }
+
+        return false;
       };
 
       this.submitTargetScalingPolicy = function() {
