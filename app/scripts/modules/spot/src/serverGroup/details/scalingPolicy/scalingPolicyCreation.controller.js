@@ -33,8 +33,35 @@ module(SPOT_SERVERGROUP_DETAILS_SCALINGPOLICY_CONTROLLER, [SERVER_GROUP_WRITER])
             serverGroup: () => this.serverGroup,
             action: () => 'Create',
             application: () => this.application,
+            policy: () => undefined,
           },
         });
+      };
+      this.hasSimplePolicies = () => {
+        let retVal = false;
+
+        const scalingObj = this.serverGroup.elastigroup.scaling;
+        if (scalingObj) {
+          const scaleUpPolicies = this.serverGroup.elastigroup.scaling.up;
+          const scaleDownPolicies = this.serverGroup.elastigroup.scaling.down;
+          if (scaleUpPolicies || scaleDownPolicies) {
+            retVal = true;
+          }
+        }
+        return retVal;
+      };
+
+      this.hasTargetPolicies = () => {
+        let retVal = false;
+
+        const scalingObj = this.serverGroup.elastigroup.scaling;
+        if (scalingObj) {
+          const targetPolicies = this.serverGroup.elastigroup.scaling.target;
+          if (targetPolicies) {
+            retVal = true;
+          }
+        }
+        return retVal;
       };
     },
   ],

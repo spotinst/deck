@@ -10,4 +10,11 @@ export class ScalingPolicyWriter {
       job: [command],
     });
   }
+  public static deleteScalingPolicy(application: Application, command: any): IPromise<ITask> {
+    return TaskExecutor.executeTask({
+      application: application,
+      description: 'delete scaling policy ',
+      job: [command],
+    });
+  }
 }
