@@ -98,7 +98,20 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
         return retVal;
       };
 
-      //todo dor sagi add get target policies here
+      this.getScalingTargetPolicies = () => {
+        const retVal = [];
+        const scaleTargetPolicies = this.serverGroup.elastigroup.scaling.target;
+
+        if (scaleTargetPolicies) {
+          for (let index = 0; index < scaleTargetPolicies.length; index++) {
+            scaleTargetPolicies[index].index = index;
+            scaleTargetPolicies[index].kind = SCALING_POLICIES_KINDS.TARGET;
+            retVal.push(scaleTargetPolicies[index]);
+          }
+        }
+
+        return retVal;
+      };
 
       this.editSimpleScalingPolicy = policy => {
         //open the new modal of simple scaling policy with action edit
@@ -114,14 +127,26 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
         });
       };
 
-      //todo dor sagi edit target
+      this.editTargetScalingPolicy = policy => {
+        //open the new modal of simple scaling policy with action edit
+        $uibModal.open({
+          templateUrl: require('./scalingPolicy/targetScalingPolicy/targetScalingPolicy.html'),
+          controller: 'spotTargetScalingPolicyCtrl as ctrl',
+          resolve: {
+            serverGroup: () => this.serverGroup,
+            action: () => 'Edit',
+            application: () => app,
+            policy: () => policy,
+          },
+        });
+      };
 
       this.deleteSpotScalingPolicy = policy => {
         const serverGroup = this.serverGroup;
         const kindOfPolicyToDelete = policy.kind;
         const policyNameToDelete = policy.policyName;
-        const allScalingPolicies = this.serverGroup.elastigroup.scaling;
         const policyIndex = policy.index;
+        const allScalingPolicies = this.serverGroup.elastigroup.scaling;
 
         const taskMonitor = {
           application: app,
@@ -134,9 +159,9 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
           return ScalingPolicyWriter.deleteScalingPolicy(app, command);
         };
         ConfirmationModalService.confirm({
-          header: 'Really delete ' + policyNameToDelete + '?',
-          buttonText: 'Delete ' + policyNameToDelete,
-          verificationLabel: `<p><strong>Please type in the scaling policy name
+          header: 'Are you sure you wish to delete this policy?',
+          buttonText: 'Delete',
+          verificationLabel: `<p align="right"><strong>Please type in the scaling policy name
           (<span class="verification-text">${policyNameToDelete}</span>) to confirm.</strong></p>`,
           textToVerify: `${policyNameToDelete}`,
           taskMonitorConfig: taskMonitor,
@@ -149,7 +174,7 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
 
         let allScaleUpPolicies = allScalingPolicies.up;
         let allScaleDownPolicies = allScalingPolicies.down;
-        //todo dor sagi add target policy
+        let allScaleTargetPolicies = allScalingPolicies.target;
 
         //normalize the type field
         if (allScaleUpPolicies) {
@@ -178,11 +203,14 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
             allScaleDownPolicies.splice(policyIndex, 1);
             break;
           }
-          //todo dor sagi add target
+          case SCALING_POLICIES_KINDS.TARGET: {
+            allScaleTargetPolicies.splice(policyIndex, 1);
+            break;
+          }
         }
         allScalingPolicies.up = allScaleUpPolicies;
         allScalingPolicies.down = allScaleDownPolicies;
-        //todo dor sagi add target
+        allScalingPolicies.target = allScaleTargetPolicies;
 
         retVal = { group: { scaling: allScalingPolicies } };
 
