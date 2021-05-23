@@ -40,4 +40,32 @@ export class ServerGroupReader {
       .withParams({ includeDetails: 'false' })
       .get();
   }
+
+  public static getElastilogs(
+    serverGroup: any,
+    elastigroupId: string,
+    fromDate: string,
+    toDate: string,
+    severity: string,
+  ): IPromise<any[]> {
+    return API.one('applications')
+      .one(serverGroup.application)
+      .all('clusters')
+      .all(serverGroup.account)
+      .all(serverGroup.cluster)
+      .one('serverGroups', serverGroup.name)
+      .all('elastilogs')
+      .withParams({
+        elastigroupId: elastigroupId,
+        fromDate: fromDate,
+        toDate: toDate,
+        severity: severity,
+        provider: serverGroup.cloudProvider,
+      })
+      .getList()
+      .catch((error: any): any[] => {
+        $log.error(error, 'error retrieving elastilogs');
+        return [];
+      });
+  }
 }

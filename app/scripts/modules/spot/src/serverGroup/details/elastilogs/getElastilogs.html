@@ -1,0 +1,29 @@
+<div modal-page>
+  <modal-close dismiss="ctrl.close()"></modal-close>
+  <div class="modal-header">
+    <h4 class="modal-title">Elastilogs for {{ctrl.serverGroup.name}}</h4>
+  </div>
+  <div class="modal-body">
+    <h5 class="modal-title">Elastilogs</h5>
+    <div class="loading" ng-if="ctrl.viewState.loading">
+      <loading-spinner size="'small'"></loading-spinner>
+    </div>
+    <div ng-if="ctrl.viewState.error" class="text-center">
+      <p>There was an error loading elastilogs for {{ctrl.serverGroup.name}}. Please try again later.</p>
+    </div>
+    <div ng-if="!ctrl.viewState.loading && !ctrl.viewState.error && !ctrl.elastilogs.length" class="text-center">
+      <p>No elastilogs found for {{ctrl.serverGroup.name}}.</p>
+    </div>
+    <div ng-repeat="elastilog in ctrl.elastilogs" ng-if="!ctrl.viewState.loading">
+      <p class="clearfix">
+        <span class="label label-default pull-left">{{elastilog.severity | uppercase}}</span>
+        <span class="label label-default pull-right">{{elastilog.createdAt | timestamp}}</span>
+      </p>
+      <p>{{elastilog.message}}</p>
+      <hr ng-if="!last" />
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ctrl.close()">Close</button>
+  </div>
+</div>

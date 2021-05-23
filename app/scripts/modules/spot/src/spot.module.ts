@@ -11,6 +11,7 @@ import { SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER } from './server
 import { SPOT_SERVERGROUP_DETAILS_RESIZE_RESIZESERVERGROUP_CONTROLLER } from './serverGroup/details/resize/resizeServerGroup.controller';
 import { SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER } from './instance/details/instance.details.controller';
 import { SPOT_PIPELINE_STAGES_FINDIMAGEFROMTAGS_SPOTFINDIMAGEFROMTAGSSTAGE } from './pipeline/stages/findImageFromTags/spotFindImageFromTagsStage';
+import { SPOT_SERVERGROUP_DETAILS_ELASTILOGS_CONTROLLER } from './serverGroup/details/elastilogs/elastilogs.controller';
 
 const templates = require.context('./', true, /\.html$/);
 templates.keys().forEach(function(key) {
@@ -28,6 +29,7 @@ module(SPOT_MODULE, [
   SPOT_PIPELINE_STAGES_DISABLE_SERVER_GROUP_STAGE,
   SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER,
   SPOT_PIPELINE_STAGES_FINDIMAGEFROMTAGS_SPOTFINDIMAGEFROMTAGSSTAGE,
+  SPOT_SERVERGROUP_DETAILS_ELASTILOGS_CONTROLLER,
 ]).config(function() {
   CloudProviderRegistry.registerProvider('spot', {
     name: 'Spot',

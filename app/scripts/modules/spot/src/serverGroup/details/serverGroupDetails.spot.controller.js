@@ -48,6 +48,18 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
         });
       };
 
+      this.openGetElastilogsModal = () => {
+        $uibModal.open({
+          templateUrl: require('./elastilogs/getElastilogs.html'),
+          controller: 'spotElastilogsCtrl as ctrl',
+          resolve: {
+            serverGroup: () => this.serverGroup,
+            action: () => 'Get',
+            application: () => app,
+          },
+        });
+      };
+
       ////////////////////////////////////////////////////////////
       // Actions. Triggered by server group details dropdown menu
       ////////////////////////////////////////////////////////////
