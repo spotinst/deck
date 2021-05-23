@@ -42,6 +42,7 @@
             name="metricName"
             ng-model="defaultMetricName"
             ng-options="metricName as metricName.label for metricName in metricNameOptions track by metricName.value"
+            ng-change="ctrl.setPolicyUnit()"
             required
           >
           </select>
@@ -64,7 +65,7 @@
             ng-model="defaultThreshold"
           />
           <span class="input-label">
-            percents
+            {{policyUnit}}
           </span>
         </div>
         <div class="row" style="margin-bottom: 10px;">
@@ -99,6 +100,7 @@
             name="action"
             ng-model="defaultAction"
             ng-options="action as action.label for action in actionOptions track by action.value"
+            ng-change="ctrl.setActionMeasureUnit()"
           >
           </select>
           <input
@@ -110,7 +112,7 @@
             ng-model="defaultAmount"
           />
           <span class="input-label">
-            instances
+            {{actionMeasureUnit}}
           </span>
         </div>
       </div>
