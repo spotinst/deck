@@ -48,9 +48,11 @@ module(SPOT_SERVERGROUP_DETAILS_SCALINGPOLICY_CONTROLLER, [SERVER_GROUP_WRITER])
             serverGroup: () => this.serverGroup,
             action: () => 'Create',
             application: () => this.application,
+            policy: () => undefined,
           },
         });
       };
+
       this.hasSimplePolicies = () => {
         let retVal = false;
 
