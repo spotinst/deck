@@ -145,8 +145,8 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
         const serverGroup = this.serverGroup;
         const kindOfPolicyToDelete = policy.kind;
         const policyNameToDelete = policy.policyName;
-        const allScalingPolicies = this.serverGroup.elastigroup.scaling;
         const policyIndex = policy.index;
+        const allScalingPolicies = this.serverGroup.elastigroup.scaling;
 
         const taskMonitor = {
           application: app,
@@ -159,9 +159,9 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
           return ScalingPolicyWriter.deleteScalingPolicy(app, command);
         };
         ConfirmationModalService.confirm({
-          header: 'Really delete ' + policyNameToDelete + '?',
-          buttonText: 'Delete ' + policyNameToDelete,
-          verificationLabel: `<p><strong>Please type in the scaling policy name
+          header: 'Are you sure you wish to delete this policy?',
+          buttonText: 'Delete',
+          verificationLabel: `<p align="right"><strong>Please type in the scaling policy name
           (<span class="verification-text">${policyNameToDelete}</span>) to confirm.</strong></p>`,
           textToVerify: `${policyNameToDelete}`,
           taskMonitorConfig: taskMonitor,

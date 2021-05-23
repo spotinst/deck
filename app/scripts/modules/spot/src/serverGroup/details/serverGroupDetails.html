@@ -123,7 +123,7 @@
     <collapsible-section heading="Scaling Policies">
       <ul>
         <li>
-          <dt>UP SCALING</dt>
+          <dt ng-if="ctrl.getScalingUpPolicies().length"><br />UP SCALING</dt>
           <div ng-repeat="policy in ctrl.getScalingUpPolicies()">
             {{policy.policyName}}
             <div class="actions text-right">
@@ -145,8 +145,7 @@
               </button>
             </div>
           </div>
-          <br />
-          <dt>DOWN SCALING</dt>
+          <dt ng-if="ctrl.getScalingDownPolicies().length"><br />DOWN SCALING</dt>
           <div ng-repeat="policy in ctrl.getScalingDownPolicies()">
             {{policy.policyName}}
             <div class="actions text-right">
@@ -162,6 +161,28 @@
                 class="btn btn-xs btn-link"
                 ng-click="ctrl.deleteSpotScalingPolicy(policy)"
                 ng-if="ctrl.getScalingDownPolicies().length"
+              >
+                <span class="glyphicon glyphicon-trash" uib-tooltip="Delete policy"></span>
+                <span class="sr-only">Delete policy</span>
+              </button>
+            </div>
+          </div>
+          <dt ng-if="ctrl.getScalingTargetPolicies().length"><br />TARGET SCALING</dt>
+          <div ng-repeat="policy in ctrl.getScalingTargetPolicies()">
+            {{policy.policyName}}
+            <div class="actions text-right">
+              <button
+                class="btn btn-xs btn-link"
+                ng-click="ctrl.editTargetScalingPolicy(policy)"
+                ng-if="ctrl.getScalingTargetPolicies().length"
+              >
+                <span class="glyphicon glyphicon-cog" uib-tooltip="Edit target scaling policy"></span>
+                <span class="sr-only">Edit policy</span>
+              </button>
+              <button
+                class="btn btn-xs btn-link"
+                ng-click="ctrl.deleteSpotScalingPolicy(policy)"
+                ng-if="ctrl.getScalingTargetPolicies().length"
               >
                 <span class="glyphicon glyphicon-trash" uib-tooltip="Delete policy"></span>
                 <span class="sr-only">Delete policy</span>
