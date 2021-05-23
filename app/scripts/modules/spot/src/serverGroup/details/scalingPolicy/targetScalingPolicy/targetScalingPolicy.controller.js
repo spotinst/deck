@@ -4,7 +4,7 @@ import { module } from 'angular';
 import { cloneDeep } from 'lodash';
 
 import { SERVER_GROUP_WRITER, TaskMonitor } from '@spinnaker/core';
-import { ScalingPolicyWriter } from '../ScalingPolicyWriter';
+import { ScalingPolicyWriter } from '../../ScalingPolicyWriter';
 
 export const SPOT_SERVERGROUP_DETAILS_SCALINGPOLICY_TARGET_CONTROLLER =
   'spinnaker.spot.serverGroup.details.scalingPolicy.targetScalingPolicy.controller';

@@ -25,7 +25,18 @@
         </ul>
         <ul>
           <li>
-            <a href ng-click="ctrl.createTargetScalingPolicy()">Create Target Scaling Policy</a>
+            <style>
+              .isDisabled {
+                color: currentColor;
+                cursor: not-allowed;
+                opacity: 0.5;
+                text-decoration: none;
+                pointer-events: none;
+              }
+            </style>
+            <a href ng-class="{isDisabled: ctrl.hasSimplePolicies()}" ng-click="ctrl.createTargetScalingPolicy()"
+              >Create Target Scaling Policy</a
+            >
           </li>
         </ul>
       </div>

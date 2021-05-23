@@ -147,7 +147,7 @@ module(SPOT_SERVERGROUP_DETAILS_SCALINGPOLICY_SIMPLE_CONTROLLER, [SERVER_GROUP_W
       };
 
       function buildPolicyConfigForApi(formPolicyConfig, existingPolicy, scalingObjForApi) {
-        let retVal;
+        let retVal = {};
 
         const actionFromForm = formPolicyConfig.action;
         const actionType = SCALING_ACTIONS_OPTIONS.find(act => act.value === actionFromForm).type;
