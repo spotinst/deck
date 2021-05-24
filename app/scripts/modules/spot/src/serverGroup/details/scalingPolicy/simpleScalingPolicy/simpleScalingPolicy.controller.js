@@ -30,8 +30,8 @@ module(SPOT_SERVERGROUP_DETAILS_SCALINGPOLICY_SIMPLE_CONTROLLER, [SERVER_GROUP_W
     'application',
     function($scope, $uibModalInstance, action, policy, serverGroup, application) {
       this.action = action;
-      this.policy = policy;
-      this.serverGroup = serverGroup;
+      this.policy = cloneDeep(policy);
+      this.serverGroup = cloneDeep(serverGroup);
 
       $scope.statisticOptions = SCALING_STATISTIC_OPTIONS;
       $scope.metricNameOptions = SCALING_METRIC_NAME_OPTIONS;

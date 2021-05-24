@@ -15,6 +15,7 @@ import {
   SCALING_ACTIONS_OPTIONS,
   SCALING_POLICIES_KINDS,
 } from 'root/app/scripts/modules/spot/src/serverGroup/details/scalingPolicy/constants';
+import { cloneDeep } from 'lodash';
 
 export const SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER = 'spinnaker.spot.serverGroup.details.controller';
 export const name = SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER; // for backwards compatibility
@@ -142,11 +143,11 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
       };
 
       this.deleteSpotScalingPolicy = policy => {
-        const serverGroup = this.serverGroup;
+        const serverGroup = cloneDeep(this.serverGroup);
         const kindOfPolicyToDelete = policy.kind;
         const policyNameToDelete = policy.policyName;
         const policyIndex = policy.index;
-        const allScalingPolicies = this.serverGroup.elastigroup.scaling;
+        const allScalingPolicies = serverGroup.elastigroup.scaling;
 
         const taskMonitor = {
           application: app,
