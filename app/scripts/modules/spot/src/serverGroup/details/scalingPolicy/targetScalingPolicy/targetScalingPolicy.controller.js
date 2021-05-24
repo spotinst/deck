@@ -22,8 +22,8 @@ module(SPOT_SERVERGROUP_DETAILS_SCALINGPOLICY_TARGET_CONTROLLER, [SERVER_GROUP_W
     'application',
     function($scope, $uibModalInstance, action, policy, serverGroup, application) {
       this.action = action;
-      this.policy = policy;
-      this.serverGroup = serverGroup;
+      this.policy = cloneDeep(policy);
+      this.serverGroup = cloneDeep(serverGroup);
 
       const metricDict = {
         CPUUtilization: { unit: 'percent', namespace: 'AWS/EC2' },
