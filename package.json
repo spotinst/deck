@@ -1,14 +1,15 @@
 {
   "main": "./dist/bundle.js",
-  "name": "deck",
-  "version": "0.0.0",
+  "name": "@spotinst/spinnaker-deck",
+  "description": "Spinnaker-Deck service, forked with support to Spotinst",
+  "version": "126.1.1",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/spinnaker/deck.git"
+    "url": "git+https://github.com/spotinst/spinnaker-deck.git"
   },
   "publishConfig": {
-    "registry": "http://artifacts.netflix.com/api/npm/npm-local"
+    "registry": "https://npm.pkg.github.com"
   },
   "engines": {
     "node": ">=12.16.0",
