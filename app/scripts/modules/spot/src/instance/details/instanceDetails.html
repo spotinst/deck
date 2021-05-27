@@ -33,8 +33,14 @@
           <dt ng-if="instance.serverGroup">Server Group</dt>
           <dd ng-if="instance.serverGroup">{{instance.serverGroup}}</dd>
 
+          <dt ng-if="instance.healthState">Health</dt>
+          <dd ng-if="instance.healthState">{{instance.healthState}}</dd>
+
           <dt ng-if="instance.network">Network</dt>
           <dd ng-if="instance.network">{{instance.network}}</dd>
+
+          <dt ng-if="instance.launchTime">Launched</dt>
+          <dd ng-if="instance.launchTime">{{instance.launchTime | timestamp}}</dd>
         </dl>
       </collapsible-section>
     </div>
