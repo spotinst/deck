@@ -1,0 +1,111 @@
+<div modal-page class="scaling-policy-modal form-inline">
+  <task-monitor monitor="taskMonitor"></task-monitor>
+  <form role="form" name="spotTargetScalingPolicyForm" novalidate>
+    <modal-close dismiss="$dismiss()"></modal-close>
+    <div class="modal-header">
+      <h4 class="modal-title">{{ctrl.action}} Scaling Policy</h4>
+    </div>
+    <div class="modal-body">
+      <h4 class="section-heading">Target Metric</h4>
+      <div class="section-body">
+        <a href="https://docs.spot.io/elastigroup/features/scaling/target-scaling?id=target-scaling"
+          >Read more about Target Scaling Policy<br
+        /></a>
+        <br />
+        <div name="policyName" class="row" style="margin-bottom: 10px;">
+          <div class="col-md-2 sm-label-right">Policy Name</div>
+          <div class="col-md-10 content-fields">
+            <input
+              type="string"
+              name="policyName"
+              style="width: 160px; box-sizing: border-box"
+              class="form-control input-sm"
+              ng-model="defaultPolicyName"
+              required
+            />
+          </div>
+        </div>
+        <div name="metric" class="row" style="margin-bottom: 10px;">
+          <div class="col-md-2 sm-label-right">Metric</div>
+          <div class="col-md-10 content-fields">
+            <select
+              class="form-control input-sm"
+              ng-model="defaultMetricName"
+              ng-options="metricName as metricName.label for metricName in metricNameOptions track by metricName.value"
+              name="metricName"
+              style="width: 220px;"
+              required
+            >
+            </select>
+          </div>
+        </div>
+        <div name="target" class="row" style="margin-bottom: 10px;">
+          <div class="col-md-2 sm-label-right">Target</div>
+          <div class="col-md-10 content-fields">
+            <input
+              type="number"
+              class="form-control input-sm"
+              style="width: 60px;"
+              ng-model="defaultTarget"
+              name="target"
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      <h4 class="section-heading">Additional Settings</h4>
+      <div class="section-body">
+        <div name="warmpup" class="row" style="margin-bottom: 10px;">
+          <div class="col-md-2 sm-label-right">Warmup</div>
+          <div class="col-md-10 content-fields">
+            <span class="form-control-static select-placeholder">Instances need</span>
+            <input
+              type="number"
+              name="cooldown"
+              style="width: 60px"
+              class="form-control input-sm"
+              required
+              ng-model="defaultCoolDown"
+            />
+            <span class="input-label">
+              seconds to warm up
+            </span>
+          </div>
+        </div>
+        <div
+          ng-if="ctrl.isMetricCPUUtilization()"
+          name="predictionCheckbox"
+          class="row"
+          style="margin-bottom: 10px; margin-left: 1px;"
+        >
+          <div class="col-md-4 sm-label-right">Use predictive autoscaling</div>
+          <div class="col-md-15 content-fields">
+            <input type="checkbox" name="predictiveAutoScaling" class="input-sm" ng-model="defaultPrediction" />
+          </div>
+          <div ng-if="defaultPrediction==true" class="col-md-2 sm-label-right">
+            <div name="predictionMode" class="col-md-10 content-fields">
+              <select
+                type="String"
+                class="form-control input-sm"
+                style="width: 160px; box-sizing: border-box"
+                ng-model="defaultPredictionMode"
+                ng-options="predictionMode as predictionMode.label for predictionMode in predictionModeOptions track by predictionMode.value"
+                name="predictionMode"
+                required
+              >
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <spot-footer
+        action="ctrl.submitTargetScalingPolicy()"
+        cancel="ctrl.cancel()"
+        is-valid="ctrl.isValid()"
+        account="serverGroup.account"
+        verification="verification"
+      ></spot-footer>
+    </div>
+  </form>
+</div>
