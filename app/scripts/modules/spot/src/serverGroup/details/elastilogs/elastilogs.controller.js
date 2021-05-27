@@ -2,7 +2,6 @@
 import { module } from 'angular';
 
 import { ServerGroupReader } from '@spinnaker/core';
-import moment from 'moment';
 
 export const SPOT_SERVERGROUP_DETAILS_ELASTILOGS_CONTROLLER =
   'spinnaker.spot.serverGroup.details.elastilogs.elastilogs.controller';
@@ -52,9 +51,6 @@ mode.controller('spotElastilogsCtrl', [
     $scope.severity = 'ALL';
     $scope.time = 'ONE_DAY';
     $scope.timeLabel = ONE_DAY;
-    const now = moment();
-    $scope.toDate = now.format();
-    $scope.fromDate = now.add(-1, 'days').format();
 
     this.close = function() {
       $uibModalInstance.close();
@@ -70,42 +66,32 @@ mode.controller('spotElastilogsCtrl', [
     };
 
     this.setElastilogsTime = function(time) {
-      const now = moment();
       switch (time) {
         case 'ONE_DAY':
-          $scope.fromDate = now.add(-1, 'day').format();
           $scope.timeLabel = ONE_DAY;
           break;
         case 'TWO_DAYS':
-          $scope.fromDate = now.add(-2, 'days').format();
           $scope.timeLabel = TWO_DAYS;
           break;
         case 'THREE_DAYS':
-          $scope.fromDate = now.add(-3, 'days').format();
           $scope.timeLabel = THREE_DAYS;
           break;
         case 'ONE_WEEK':
-          $scope.fromDate = now.add(-1, 'week').format();
           $scope.timeLabel = ONE_WEEK;
           break;
         case 'TWO_WEEKS':
-          $scope.fromDate = now.add(-2, 'weeks').format();
           $scope.timeLabel = TWO_WEEKS;
           break;
         case 'ONE_MONTH':
-          $scope.fromDate = now.add(-1, 'month').format();
           $scope.timeLabel = ONE_MONTH;
           break;
         case 'TWO_MONTHS':
-          $scope.fromDate = now.add(-2, 'months').format();
           $scope.timeLabel = TWO_MONTHS;
           break;
         case 'THREE_MONTHS':
-          $scope.fromDate = now.add(-3, 'months').format();
           $scope.timeLabel = THREE_MONTHS;
           break;
         default:
-          $scope.fromDate = now.add(-1, 'day').format();
           $scope.timeLabel = ONE_DAY;
       }
       $scope.time = time;
@@ -121,8 +107,7 @@ mode.controller('spotElastilogsCtrl', [
       ServerGroupReader.getElastilogs(
         this.serverGroup,
         this.serverGroup.elastigroup.id,
-        $scope.fromDate,
-        $scope.toDate,
+        $scope.time,
         $scope.severity,
       ).then(
         elastilogs => {

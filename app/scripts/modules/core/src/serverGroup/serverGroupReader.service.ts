@@ -41,25 +41,26 @@ export class ServerGroupReader {
   public static getElastilogs(
     serverGroup: any,
     elastigroupId: string,
-    fromDate: string,
-    toDate: string,
+    period: string,
     severity: string,
-  ): IPromise<any[]> {
-    return API.one('applications')
-      .one(serverGroup.application)
-      .all('clusters')
-      .all(serverGroup.account)
-      .all(serverGroup.cluster)
-      .one('serverGroups', serverGroup.name)
-      .all('elastilogs')
-      .withParams({
+  ): PromiseLike<any[]> {
+    return REST('/applications')
+      .path(
+        serverGroup.app,
+        'clusters',
+        serverGroup.account,
+        serverGroup.cluster,
+        'serverGroups',
+        serverGroup.name,
+        'elastilogs',
+      )
+      .query({
         elastigroupId: elastigroupId,
-        fromDate: fromDate,
-        toDate: toDate,
+        period: period,
         severity: severity,
         provider: serverGroup.cloudProvider,
       })
-      .getList()
+      .get()
       .catch((error: any): any[] => {
         $log.error(error, 'error retrieving elastilogs');
         return [];
