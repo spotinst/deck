@@ -14,10 +14,9 @@ module(SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER, [
 ]).controller('spotInstanceDetailsCtrl', [
   '$scope',
   '$q',
-  'instanceWriter',
   'app',
   'instance',
-  function ($scope, $q, instanceWriter, app, instance) {
+  function ($scope, $q, app, instance) {
     $scope.application = app;
 
     const initialize = app.isStandalone
