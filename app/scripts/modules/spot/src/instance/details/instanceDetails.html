@@ -37,6 +37,13 @@
           <dd ng-if="instance.network">{{instance.network}}</dd>
         </dl>
       </collapsible-section>
+      <instance-links
+        address="baseIpAddress"
+        application="application"
+        instance="instance"
+        moniker="moniker"
+        environment="environment"
+      ></instance-links>
     </div>
   </div>
 </div>

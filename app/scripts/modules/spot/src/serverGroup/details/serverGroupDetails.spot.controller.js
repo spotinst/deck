@@ -1,20 +1,22 @@
 'use strict';
 
-import { module } from 'angular';
-import { ScalingPolicyWriter } from './ScalingPolicyWriter';
-import { buildUpdateElastigroupCommand } from '../helpers/serverGroupHelper';
-import {
-  ConfirmationModalService,
-  ServerGroupReader,
-  ServerGroupWarningMessageService,
-  SERVER_GROUP_WRITER,
-} from '@spinnaker/core';
 import UIROUTER_ANGULARJS from '@uirouter/angularjs';
+import { module } from 'angular';
+import { cloneDeep } from 'lodash';
 import {
   SCALING_ACTIONS_OPTIONS,
   SCALING_POLICIES_KINDS,
 } from 'root/app/scripts/modules/spot/src/serverGroup/details/scalingPolicy/constants';
-import { cloneDeep } from 'lodash';
+
+import {
+  ConfirmationModalService,
+  SERVER_GROUP_WRITER,
+  ServerGroupReader,
+  ServerGroupWarningMessageService,
+} from '@spinnaker/core';
+
+import { ScalingPolicyWriter } from './ScalingPolicyWriter';
+import { buildUpdateElastigroupCommand } from '../helpers/serverGroupHelper';
 
 export const SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER = 'spinnaker.spot.serverGroup.details.controller';
 export const name = SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER; // for backwards compatibility
@@ -27,7 +29,7 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
     'app',
     'serverGroup',
     'serverGroupWriter',
-    function($scope, $state, $uibModal, app, serverGroup, serverGroupWriter) {
+    function ($scope, $state, $uibModal, app, serverGroup, serverGroupWriter) {
       const provider = 'spot';
       this.application = app;
       this.serverGroup = serverGroup;
@@ -46,10 +48,11 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
           serverGroup.accountId,
           serverGroup.region,
           serverGroup.name,
-        ).then(details => {
+        ).then((details) => {
           cancelLoader();
           details.account = serverGroup.accountId;
           this.serverGroup = details;
+          //          debugger;
           this.elastigroupId = this.serverGroup.elastigroup.id;
         });
       };
@@ -125,7 +128,7 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
         return retVal;
       };
 
-      this.editSimpleScalingPolicy = policy => {
+      this.editSimpleScalingPolicy = (policy) => {
         //open the new modal of simple scaling policy with action edit
         $uibModal.open({
           templateUrl: require('./scalingPolicy/simpleScalingPolicy/simpleScalingPolicy.html'),
@@ -139,7 +142,7 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
         });
       };
 
-      this.editTargetScalingPolicy = policy => {
+      this.editTargetScalingPolicy = (policy) => {
         //open the new modal of simple scaling policy with action edit
         $uibModal.open({
           templateUrl: require('./scalingPolicy/targetScalingPolicy/targetScalingPolicy.html'),
@@ -153,7 +156,7 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
         });
       };
 
-      this.deleteSpotScalingPolicy = policy => {
+      this.deleteSpotScalingPolicy = (policy) => {
         const serverGroup = cloneDeep(this.serverGroup);
         const kindOfPolicyToDelete = policy.kind;
         const policyNameToDelete = policy.policyName;
@@ -167,7 +170,7 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
         };
         const policyConfigForSdk = buildPolicyConfigForApi(allScalingPolicies, kindOfPolicyToDelete, policyIndex);
         const command = buildUpdateElastigroupCommand(policyConfigForSdk, serverGroup);
-        const submitMethod = function() {
+        const submitMethod = function () {
           return ScalingPolicyWriter.deleteScalingPolicy(app, command);
         };
         ConfirmationModalService.confirm({
@@ -191,17 +194,17 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
         //normalize the type field
         if (allScaleUpPolicies) {
           allScaleUpPolicies.forEach(
-            scaleUp =>
+            (scaleUp) =>
               (scaleUp.action.type = SCALING_ACTIONS_OPTIONS.find(
-                act => act.typeUpperCase === scaleUp.action.type || act.type === scaleUp.action.type,
+                (act) => act.typeUpperCase === scaleUp.action.type || act.type === scaleUp.action.type,
               ).type),
           );
         }
         if (allScaleDownPolicies) {
           allScaleDownPolicies.forEach(
-            scaleDown =>
+            (scaleDown) =>
               (scaleDown.action.type = SCALING_ACTIONS_OPTIONS.find(
-                act => act.typeUpperCase === scaleDown.action.type || act.type === scaleDown.action.type,
+                (act) => act.typeUpperCase === scaleDown.action.type || act.type === scaleDown.action.type,
               ).type),
           );
         }
@@ -256,7 +259,7 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
           },
         };
 
-        const submitMethod = params =>
+        const submitMethod = (params) =>
           serverGroupWriter.destroyServerGroup(serverGroup, app, { elastigroupId: serverGroup.elastigroup.id });
 
         const stateParams = {
@@ -307,7 +310,7 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
           title: 'Disabling ' + serverGroup.name,
         };
 
-        const submitMethod = params =>
+        const submitMethod = (params) =>
           serverGroupWriter.disableServerGroup(serverGroup, app, { elastigroupId: serverGroup.elastigroup.id });
 
         const confirmationModalParams = {
@@ -338,7 +341,7 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
           title: 'Enabling ' + serverGroup.name,
         };
 
-        const submitMethod = params =>
+        const submitMethod = (params) =>
           serverGroupWriter.enableServerGroup(serverGroup, app, { elastigroupId: serverGroup.elastigroup.id });
 
         const confirmationModalParams = {
