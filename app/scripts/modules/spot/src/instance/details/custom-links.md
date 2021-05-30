@@ -9,7 +9,7 @@ launchTime | timestamp of when instance launched | 1486146739000
 account | Spot account Name | My-Spinnaker-Account
 region | region where instance resides | us-east-1
 availabilityZone | AZ where instance resides | us-east-1-a
-lifeCycle | Spot or OD | OD
+lifecycle | Spot or OD | OD
 provider | spot| spot
 publicIp | external IP address | 10.100.10.219
 privateIp | internal IP address (within AWS) | 104.156.81.74
