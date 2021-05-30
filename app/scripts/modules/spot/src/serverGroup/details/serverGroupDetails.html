@@ -1,102 +1,203 @@
-<div class="details-panel" ng-class="{ disabled: ctrl.serverGroup.disabled }">
-  <div class="header" ng-if="ctrl.state.loading">
-    <div class="close-button">
-      <a class="btn btn-link" ui-sref="^">
-        <span class="glyphicon glyphicon-remove"></span>
+<div class='details-panel' ng-class='{ disabled: ctrl.serverGroup.disabled }'>
+  <div class='header' ng-if='ctrl.state.loading'>
+    <div class='close-button'>
+      <a class='btn btn-link' ui-sref='^'>
+        <span class='glyphicon glyphicon-remove'></span>
       </a>
     </div>
-    <div class="horizontal center spinner-container">
+    <div class='horizontal center spinner-container'>
       <loading-spinner size="'small'"></loading-spinner>
     </div>
   </div>
-  <div class="header" ng-if="!ctrl.state.loading">
-    <cloud-provider-logo provider="ctrl.serverGroup.type" height="'36px'" width="'36px'"></cloud-provider-logo>
-    <div class="close-button">
-      <a class="btn btn-link" ui-sref="^">
-        <span class="glyphicon glyphicon-remove"></span>
+  <div class='header' ng-if='!ctrl.state.loading'>
+    <cloud-provider-logo provider='ctrl.serverGroup.type' height="'36px'" width="'36px'"></cloud-provider-logo>
+    <div class='close-button'>
+      <a class='btn btn-link' ui-sref='^'>
+        <span class='glyphicon glyphicon-remove'></span>
       </a>
     </div>
-    <div class="header-text horizontal middle">
-      <h3 class="horizontal middle space-between flex-1" select-on-dbl-click>
-        {{ctrl.serverGroup.name}}
-      </h3>
+    <div class='header-text horizontal middle'>
+      <h3 class='horizontal middle space-between flex-1' select-on-dbl-click>{{ctrl.serverGroup.name}}</h3>
     </div>
     <div>
-      <div class="actions" ng-class="{ insights: ctrl.serverGroup.insightActions.length > 0 }">
-        <div class="dropdown" uib-dropdown dropdown-append-to-body>
-          <button type="button" class="btn btn-sm btn-primary dropdown-toggle" uib-dropdown-toggle>
-            Server Group Actions <span class="caret"></span>
+      <div class='actions' ng-class='{ insights: ctrl.serverGroup.insightActions.length > 0 }'>
+        <div class='dropdown' uib-dropdown dropdown-append-to-body>
+          <button type='button' class='btn btn-sm btn-primary dropdown-toggle' uib-dropdown-toggle>
+            Server Group Actions <span class='caret'></span>
           </button>
-          <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-            <li><a href ng-if="!ctrl.serverGroup.disabled" ng-click="ctrl.disableServerGroup()">Disable</a></li>
-            <li><a href ng-if="ctrl.serverGroup.disabled" ng-click="ctrl.enableServerGroup()">Enable</a></li>
-            <li><a href ng-click="ctrl.destroyServerGroup()">Destroy</a></li>
-            <li><a href ng-click="ctrl.resizeServerGroup()">Resize</a></li>
+          <ul class='dropdown-menu' uib-dropdown-menu role='menu'>
+            <li><a href ng-if='!ctrl.serverGroup.disabled' ng-click='ctrl.disableServerGroup()'>Disable</a></li>
+            <li><a href ng-if='ctrl.serverGroup.disabled' ng-click='ctrl.enableServerGroup()'>Enable</a></li>
+            <li><a href ng-click='ctrl.destroyServerGroup()'>Destroy</a></li>
+            <li><a href ng-click='ctrl.resizeServerGroup()'>Resize</a></li>
           </ul>
         </div>
-        <div class="dropdown" ng-if="ctrl.serverGroup.insightActions.length > 0" uib-dropdown dropdown-append-to-body>
-          <button type="button" class="btn btn-sm btn-default dropdown-toggle" uib-dropdown-toggle>
-            Insight <span class="caret"></span>
+        <div class='dropdown' ng-if='ctrl.serverGroup.insightActions.length > 0' uib-dropdown dropdown-append-to-body>
+          <button type='button' class='btn btn-sm btn-default dropdown-toggle' uib-dropdown-toggle>
+            Insight <span class='caret'></span>
           </button>
-          <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-            <li ng-repeat="action in ctrl.serverGroup.insightActions">
-              <a target="_blank" href="{{action.url}}">{{action.label}}</a>
+          <ul class='dropdown-menu' uib-dropdown-menu role='menu'>
+            <li ng-repeat='action in ctrl.serverGroup.insightActions'>
+              <a target='_blank' href='{{action.url}}'>{{action.label}}</a>
             </li>
           </ul>
         </div>
-        <div class="clearfix"></div>
+        <div class='clearfix'></div>
       </div>
     </div>
   </div>
-  <div class="content" ng-if="!ctrl.state.loading">
-    <server-group-running-tasks-details server-group="ctrl.serverGroup"></server-group-running-tasks-details>
-    <collapsible-section heading="Server Group Information" expanded="true">
-      <dl class="dl-horizontal dl-flex">
+  <div class='content' ng-if='!ctrl.state.loading'>
+    <server-group-running-tasks-details server-group='ctrl.serverGroup'></server-group-running-tasks-details>
+    <collapsible-section heading='Server Group Information' expanded='true'>
+      <dl class='dl-horizontal dl-flex'>
         <dt>Created</dt>
         <dd>{{ctrl.serverGroup.createdTime | timestamp}}</dd>
         <dt>In</dt>
         <dd>
-          <account-tag account="ctrl.serverGroup.account" pad="right"></account-tag>
-          {{ctrl.serverGroup.region}}
+          <account-tag account='ctrl.serverGroup.account' pad='right'></account-tag>
         </dd>
+        <dt>Region</dt>
+        <dd>{{ctrl.serverGroup.region}}</dd>
         <dt>Zones</dt>
-        <dd ng-repeat="zone in ctrl.serverGroup.zones">{{zone}}</dd>
+        <dd ng-repeat='zone in ctrl.serverGroup.zones'>{{zone}}</dd>
       </dl>
     </collapsible-section>
-    <collapsible-section heading="Size" expanded="true">
-      <dl class="dl-horizontal dl-flex">
+    <collapsible-section heading='Size' expanded='true'>
+      <dl class='dl-horizontal dl-flex'>
         <dt>Min</dt>
         <dd>{{ctrl.serverGroup.capacity.min}}</dd>
         <dt>Max</dt>
         <dd>{{ctrl.serverGroup.capacity.max}}</dd>
         <dt>Desired</dt>
         <dd>{{ctrl.serverGroup.capacity.desired}}</dd>
+        <dt>Current</dt>
+        <dd>{{ctrl.serverGroup.instances.length}}</dd>
       </dl>
     </collapsible-section>
-    <collapsible-section heading="Launch Configuration">
-      <dl class="dl-horizontal dl-flex">
+    <collapsible-section heading='Launch Configuration'>
+      <dl class='dl-horizontal dl-flex'>
         <dt>Elastigroup ID</dt>
         <dd>{{ctrl.serverGroup.elastigroup.id}}</dd>
-        <dt ng-if="ctrl.serverGroup.elastigroup.compute.launchSpecification.imageId">Image ID</dt>
-        <dd ng-if="ctrl.serverGroup.elastigroup.compute.launchSpecification.imageId">
+        <dt ng-if='ctrl.serverGroup.elastigroup.compute.launchSpecification.imageId'>Image ID</dt>
+        <dd ng-if='ctrl.serverGroup.elastigroup.compute.launchSpecification.imageId'>
           {{ctrl.serverGroup.elastigroup.compute.launchSpecification.imageId}}
         </dd>
 
-        <dt ng-if="ctrl.serverGroup.elastigroup.compute.launchSpecification.loadBalancersConfig.loadBalancers">
+        <dt ng-if='ctrl.serverGroup.elastigroup.compute.launchSpecification.loadBalancersConfig.loadBalancers'>
           Balancers
         </dt>
         <dd
-          ng-repeat="lb in ctrl.serverGroup.elastigroup.compute.launchSpecification.loadBalancersConfig.loadBalancers"
+          ng-repeat='lb in ctrl.serverGroup.elastigroup.compute.launchSpecification.loadBalancersConfig.loadBalancers'
         >
           {{lb.name}}
         </dd>
-        <dt ng-if="ctrl.serverGroup.elastigroup.compute.instanceTypes.onDemand">OD Type</dt>
-        <dd ng-if="ctrl.serverGroup.elastigroup.compute.instanceTypes.onDemand">
+        <dt ng-if='ctrl.serverGroup.elastigroup.compute.instanceTypes.onDemand'>OD Type</dt>
+        <dd ng-if='ctrl.serverGroup.elastigroup.compute.instanceTypes.onDemand'>
           {{ctrl.serverGroup.elastigroup.compute.instanceTypes.onDemand}}
         </dd>
-        <dt ng-if="ctrl.serverGroup.elastigroup.compute.instanceTypes.spot">Spot Types</dt>
-        <dd ng-repeat="type in ctrl.serverGroup.elastigroup.compute.instanceTypes.spot">{{type}}</dd>
+        <dt ng-if='ctrl.serverGroup.elastigroup.compute.instanceTypes.spot'>Spot Types</dt>
+        <dd ng-repeat='type in ctrl.serverGroup.elastigroup.compute.instanceTypes.spot'>{{type}}</dd>
+
+        <dt ng-if='ctrl.serverGroup.elastigroup.compute.launchSpecification.keyPair'>Key Pair</dt>
+        <dd ng-if='ctrl.serverGroup.elastigroup.compute.launchSpecification.keyPair'>
+          {{ctrl.serverGroup.elastigroup.compute.launchSpecification.keyPair}}
+        </dd>
+
+        <dt ng-if='ctrl.serverGroup.elastigroup.compute.launchSpecification.tags'>Tags</dt>
+        <dd ng-repeat='tag in ctrl.serverGroup.elastigroup.compute.launchSpecification.tags'>
+          <u>{{tag.tagKey}}</u>: {{tag.tagValue}}
+        </dd>
+
+        <dt ng-if='ctrl.serverGroup.elastigroup.compute.launchSpecification.iamRole'>IAM Role</dt>
+        <dd ng-if='ctrl.serverGroup.elastigroup.compute.launchSpecification.iamRole'>
+          {{ctrl.serverGroup.elastigroup.compute.launchSpecification.iamRole.arn}}
+        </dd>
+
+        <dt ng-if='ctrl.serverGroup.elastigroup.compute.launchSpecification.securityGroupIds'>Security<br />Groups</dt>
+        <br />
+        <dd ng-repeat='sg in ctrl.serverGroup.elastigroup.compute.launchSpecification.securityGroupIds'>{{sg}}</dd>
       </dl>
+    </collapsible-section>
+    <collapsible-section heading='Scaling Policies'>
+      <ul>
+        <li>
+          <dt ng-if='ctrl.getScalingUpPolicies().length'><br />UP SCALING</dt>
+          <div ng-repeat='policy in ctrl.getScalingUpPolicies()'>
+            {{policy.policyName}}
+            <div class='actions text-right'>
+              <button
+                class='btn btn-xs btn-link'
+                ng-click='ctrl.editSimpleScalingPolicy(policy)'
+                ng-if='ctrl.getScalingUpPolicies().length'
+              >
+                <span class='glyphicon glyphicon-cog' uib-tooltip='Edit simple scaling policy'></span>
+                <span class='sr-only'>Edit policy</span>
+              </button>
+              <button
+                class='btn btn-xs btn-link'
+                ng-click='ctrl.deleteSpotScalingPolicy(policy)'
+                ng-if='ctrl.getScalingUpPolicies().length'
+              >
+                <span class='glyphicon glyphicon-trash' uib-tooltip='Delete policy'></span>
+                <span class='sr-only'>Delete policy</span>
+              </button>
+            </div>
+          </div>
+          <dt ng-if='ctrl.getScalingDownPolicies().length'><br />DOWN SCALING</dt>
+          <div ng-repeat='policy in ctrl.getScalingDownPolicies()'>
+            {{policy.policyName}}
+            <div class='actions text-right'>
+              <button
+                class='btn btn-xs btn-link'
+                ng-click='ctrl.editSimpleScalingPolicy(policy)'
+                ng-if='ctrl.getScalingDownPolicies().length'
+              >
+                <span class='glyphicon glyphicon-cog' uib-tooltip='Edit policy'></span>
+                <span class='sr-only'>Edit policy</span>
+              </button>
+              <button
+                class='btn btn-xs btn-link'
+                ng-click='ctrl.deleteSpotScalingPolicy(policy)'
+                ng-if='ctrl.getScalingDownPolicies().length'
+              >
+                <span class='glyphicon glyphicon-trash' uib-tooltip='Delete policy'></span>
+                <span class='sr-only'>Delete policy</span>
+              </button>
+            </div>
+          </div>
+          <dt ng-if='ctrl.getScalingTargetPolicies().length'><br />TARGET SCALING</dt>
+          <div ng-repeat='policy in ctrl.getScalingTargetPolicies()'>
+            {{policy.policyName}}
+            <div class='actions text-right'>
+              <button
+                class='btn btn-xs btn-link'
+                ng-click='ctrl.editTargetScalingPolicy(policy)'
+                ng-if='ctrl.getScalingTargetPolicies().length'
+              >
+                <span class='glyphicon glyphicon-cog' uib-tooltip='Edit target scaling policy'></span>
+                <span class='sr-only'>Edit policy</span>
+              </button>
+              <button
+                class='btn btn-xs btn-link'
+                ng-click='ctrl.deleteSpotScalingPolicy(policy)'
+                ng-if='ctrl.getScalingTargetPolicies().length'
+              >
+                <span class='glyphicon glyphicon-trash' uib-tooltip='Delete policy'></span>
+                <span class='sr-only'>Delete policy</span>
+              </button>
+            </div>
+          </div>
+          <br />
+          <a href ng-click='ctrl.openCreateScalingPolicyModal()'>Create new scaling policy</a>
+        </li>
+      </ul>
+    </collapsible-section>
+    <collapsible-section heading='Elastilogs'>
+      <ul>
+        <li>
+          <a href ng-click='ctrl.openGetElastilogsModal()'>Get Elastilogs</a>
+        </li>
+      </ul>
     </collapsible-section>
   </div>
 </div>

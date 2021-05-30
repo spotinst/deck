@@ -1,0 +1,46 @@
+<div modal-page class="confirmation-modal">
+  <task-monitor monitor="taskMonitor"></task-monitor>
+  <form role="form">
+    <modal-close dismiss="$dismiss()"></modal-close>
+    <div class="modal-header">
+      <h4 class="modal-title">Create scaling policy</h4>
+      <p><br />Target tracking and Simple scaling cannot be configured simultaneously</p>
+    </div>
+    <div class="modal-body confirmation-modal">
+      <div class="container">
+        <ul>
+          <li>
+            <style>
+              .isDisabled {
+                color: currentColor;
+                cursor: not-allowed;
+                opacity: 0.5;
+                text-decoration: none;
+                pointer-events: none;
+              }
+            </style>
+            <a href ng-class="{isDisabled: ctrl.hasTargetPolicies()}" ng-click="ctrl.createSimpleScalingPolicy()"
+              >Create Simple Scaling Policy</a
+            >
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <style>
+              .isDisabled {
+                color: currentColor;
+                cursor: not-allowed;
+                opacity: 0.5;
+                text-decoration: none;
+                pointer-events: none;
+              }
+            </style>
+            <a href ng-class="{isDisabled: ctrl.hasSimplePolicies()}" ng-click="ctrl.createTargetScalingPolicy()"
+              >Create Target Scaling Policy</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </form>
+</div>

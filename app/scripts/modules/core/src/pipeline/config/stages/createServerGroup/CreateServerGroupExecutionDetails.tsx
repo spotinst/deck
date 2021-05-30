@@ -1,12 +1,13 @@
-import React from 'react';
+import { StageFailureMessage } from 'core';
 import { find, get } from 'lodash';
+import React from 'react';
 
 import { AccountTag } from 'core/account';
-import { ReactInjector } from 'core/reactShims';
-import { ExecutionDetailsSection, IExecutionDetailsSectionProps } from '../common';
-import { StageFailureMessage } from 'core/pipeline';
-import { ClusterState } from 'core/state';
 import { UrlBuilder } from 'core/navigation';
+import { ReactInjector } from 'core/reactShims';
+import { ClusterState } from 'core/state';
+
+import { ExecutionDetailsSection, IExecutionDetailsSectionProps } from '../common';
 
 export interface IDeployResult {
   type: string;
@@ -49,7 +50,7 @@ export class CreateServerGroupExecutionDetails extends React.Component<
     let deployResults: IDeployResult[] = [];
     const deployedArtifacts = find(resultObjects, 'serverGroupNames');
     if (deployedArtifacts) {
-      const deployedServerGroups = (deployedArtifacts['serverGroupNames'] || []).filter(a => a.includes(':'));
+      const deployedServerGroups = (deployedArtifacts['serverGroupNames'] || []).filter((a) => a.includes(':'));
       deployResults = deployedServerGroups.map((serverGroupNameAndRegion: string) => {
         const [region, serverGroupName] = serverGroupNameAndRegion.split(':');
         const result: IDeployResult = {
@@ -114,7 +115,7 @@ export class CreateServerGroupExecutionDetails extends React.Component<
             <div className="col-md-12">
               <div className="well alert alert-info">
                 <strong>Deployed: </strong>
-                {(deployResults || []).map(result => (
+                {(deployResults || []).map((result) => (
                   <DeployedServerGroup key={result.href} result={result} />
                 ))}
               </div>

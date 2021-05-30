@@ -1,0 +1,95 @@
+<div modal-page>
+  <modal-close dismiss='ctrl.close()'></modal-close>
+  <div class='modal-header'>
+    <h4 class='modal-title'>Elastilogs for {{ctrl.serverGroup.name}}</h4>
+  </div>
+  <div class='modal-body'>
+    <p class='modal-filters'>
+    <div>
+      <p style='display: inline-block; vertical-align: bottom;'><strong>Severity:</strong>
+      </p>
+      <div class='severity' style='display: inline-block; margin-left: 5px;'>
+        <div class='dropdown' ng-model='severity' uib-dropdown
+             dropdown-append-to-body>
+          <button type='button' style='padding: 3px 7px;'
+                  class='btn btn-sm btn-primary dropdown-toggle pull-left'
+                  uib-dropdown-toggle>
+            {{severity}} <span class='caret'></span>
+          </button>
+          <ul class='dropdown-menu' uib-dropdown-menu role='menu'>
+            <li><a href ng-click="ctrl.setElastilogsSeverity('ALL')">ALL</a>
+            </li>
+            <li><a href ng-click="ctrl.setElastilogsSeverity('INFO')">INFO</a>
+            </li>
+            <li><a href ng-click="ctrl.setElastilogsSeverity('DEBUG')">DEBUG</a>
+            </li>
+            <li><a href ng-click="ctrl.setElastilogsSeverity('WARN')">WARN</a>
+            </li>
+            <li><a href ng-click="ctrl.setElastilogsSeverity('ERROR')">ERROR</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <p
+        style='display: inline-block; margin-left: 10px; vertical-align: bottom;'>
+        <strong>Period: </strong></p>
+      <div class='time' style='display: inline-block; margin-left: 5px;'>
+        <div class='dropdown' ng-model='time' uib-dropdown
+             dropdown-append-to-body>
+          <button type='button' style='padding: 3px 7px;'
+                  class='btn btn-sm btn-primary dropdown-toggle pull-left'
+                  uib-dropdown-toggle>
+            {{timeLabel}} <span class='caret'></span>
+          </button>
+          <ul class='dropdown-menu' uib-dropdown-menu role='menu'>
+            <li><a href ng-click="ctrl.setElastilogsTime('ONE_DAY')">ONE DAY</a>
+            </li>
+            <li><a href ng-click="ctrl.setElastilogsTime('TWO_DAYS')">TWO
+              DAYS</a></li>
+            <li><a href ng-click="ctrl.setElastilogsTime('THREE_DAYS')">THREE
+              DAYS</a></li>
+            <li><a href ng-click="ctrl.setElastilogsTime('ONE_WEEK')">ONE
+              WEEK</a></li>
+            <li><a href ng-click="ctrl.setElastilogsTime('TWO_WEEKS')">TWO
+              WEEKS</a></li>
+            <li><a href ng-click="ctrl.setElastilogsTime('ONE_MONTH')">ONE
+              MONTH</a></li>
+            <li><a href ng-click="ctrl.setElastilogsTime('TWO_MONTHS')">TWO
+              MONTHS</a></li>
+            <li><a href ng-click="ctrl.setElastilogsTime('THREE_MONTHS')">THREE
+              MONTHS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    </p>
+    <p class='modal-content'>
+    <div class='loading' ng-if='ctrl.viewState.loading'>
+      <loading-spinner size="'large'"></loading-spinner>
+    </div>
+    <div ng-if='ctrl.viewState.error' class='text-center'>
+      <p>There was an error loading elastilogs for {{ctrl.serverGroup.name}}.
+        Please try again later.</p>
+    </div>
+    <div
+      ng-if='!ctrl.viewState.loading && !ctrl.viewState.error && !ctrl.elastilogs.length'
+      class='text-center'>
+      <p>No elastilogs found for {{ctrl.serverGroup.name}}.</p>
+    </div>
+    <div ng-repeat='elastilog in ctrl.elastilogs'
+         ng-if='!ctrl.viewState.loading'>
+      <p class='clearfix'>
+          <span
+            class="label label-{{elastilog.severity === 'ERROR' ? 'danger' : elastilog.severity === 'WARN' ? 'warning' : elastilog.severity === 'DEBUG' ? 'success' : 'info'}} pull-left">{{elastilog.severity | uppercase}}</span>
+        <span
+          class='label label-default pull-right'>{{elastilog.createdAt | timestamp}}</span>
+      </p>
+      <p>{{elastilog.message}}</p>
+      <hr ng-if='!last' />
+    </div>
+    </p>
+  </div>
+  <div class='modal-footer'>
+    <button class='btn btn-primary' ng-click='ctrl.close()'>Close</button>
+  </div>
+</div>

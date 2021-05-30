@@ -1,14 +1,20 @@
 'use strict';
 
+import UIROUTER_ANGULARJS from '@uirouter/angularjs';
 import { module } from 'angular';
+import ANGULAR_UI_BOOTSTRAP from 'angular-ui-bootstrap';
 
+import { INSTANCE_WRITE_SERVICE } from '@spinnaker/core';
 import { ConfirmationModalService, INSTANCE_WRITE_SERVICE, InstanceReader } from '@spinnaker/core';
 import UIROUTER_ANGULARJS from '@uirouter/angularjs';
 import _ from 'lodash';
 
 export const SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER = 'spinnaker.spot.instance.details.controller';
 export const name = SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER; // for backwards compatibility
-module(SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER, [UIROUTER_ANGULARJS, INSTANCE_WRITE_SERVICE]).controller(
+module(SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER, [UIROUTER_ANGULARJS, INSTANCE_WRITE_SERVICE], [
+  UIROUTER_ANGULARJS,
+  ANGULAR_UI_BOOTSTRAP /*, INSTANCE_WRITE_SERVICE*/,
+]).controller(
   'spotInstanceDetailsCtrl',
   [
     '$scope',
