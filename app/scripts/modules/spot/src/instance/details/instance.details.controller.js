@@ -41,8 +41,7 @@ module(SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER, [UIROUTER_ANGULARJS, A
       };
 
       function retrieveInstance() {
-        let instanceSummary, account, region, serverGroupOfInstance;
-        serverGroupOfInstance = '';
+        let instanceSummary, account, region;
         if (!$scope.application.serverGroups) {
           // standalone instance
           instanceSummary = { id: instance.instanceId }; // terminate call expects `id` to be populated
@@ -55,7 +54,6 @@ module(SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER, [UIROUTER_ANGULARJS, A
                 instanceSummary = possibleInstance;
                 account = serverGroup.account;
                 region = serverGroup.region;
-                serverGroupOfInstance = serverGroup.name;
                 return true;
               }
             });
@@ -70,19 +68,23 @@ module(SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER, [UIROUTER_ANGULARJS, A
           return InstanceReader.getInstanceDetails(account, region, instance.instanceId).then((details) => {
             $scope.instance = _.defaults(instanceSummary, details);
             $scope.instance.serverGroupId = details.serverGroup;
-            $scope.instance.account = account;
-            $scope.instance.region = region;
-            //            $scope.baseIpAddress = instanceDetails.publicIp || instanceDetails.privateIp;
-            //            $scope.baseIpAddress = details.publicDnsName || details.privateIpAddress;
+            $scope.baseIpAddress = instance.publicIp || instance.privateIp;
 
             const date = new Date(details.launchTime);
             $scope.instance.launchTime = date.toLocaleString();
 
-            $scope.instance.type = $scope.instance.type.toLowerCase().replace('_', '.');
+            if ($scope.instance.type) {
+              $scope.instance.type = $scope.instance.type.toLowerCase().replace('_', '.');
+            }
 
-            const healthStatusLowerCase = details.spotHealthStatus.toLowerCase();
-            $scope.instance.lifecycle = lifeCycleDict[$scope.instance.lifecycle].label;
-            $scope.instance.spotHealthStatus = capitalize(healthStatusLowerCase);
+            if (details.spotHealthStatus) {
+              const healthStatusLowerCase = details.spotHealthStatus.toLowerCase();
+              $scope.instance.spotHealthStatus = capitalize(healthStatusLowerCase);
+            }
+
+            if ($scope.instance.lifecycle) {
+              $scope.instance.lifecycle = lifeCycleDict[$scope.instance.lifecycle].label;
+            }
           });
         }
       }
