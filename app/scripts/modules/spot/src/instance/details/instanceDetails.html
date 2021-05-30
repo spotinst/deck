@@ -27,35 +27,6 @@
       >
       </copy-to-clipboard>
     </div>
-    <div class="content" ng-if="!state.loading">
-      <collapsible-section heading="Instance Information" expanded="true">
-        <dl class="dl-horizontal dl-flex">
-          <dt ng-if="instance.availabilityZone">AZ</dt>
-          <dd ng-if="instance.availabilityZone">{{instance.availabilityZone}}</dd>
-
-          <dt ng-if="instance.type">Type</dt>
-          <dd ng-if="instance.type">{{instance.type}}</dd>
-
-          <dt ng-if="instance.serverGroup">Server Group</dt>
-          <dd ng-if="instance.serverGroup">{{instance.serverGroup}}</dd>
-
-          <dt ng-if="instance.healthState">Health</dt>
-          <dd ng-if="instance.healthState">{{instance.healthState}}</dd>
-
-          <dt ng-if="instance.lifecycle">Lifecycle</dt>
-          <dd ng-if="instance.lifecycle">{{instance.lifecycle}}</dd>
-
-          <dt ng-if="instance.publicIp">Public IP</dt>
-          <dd ng-if="instance.publicIp">{{instance.publicIp}}</dd>
-
-          <dt ng-if="instance.privateIp">Private IP</dt>
-          <dd ng-if="instance.privateIp">{{instance.privateIp}}</dd>
-
-          <dt ng-if="instance.launchTime">Launched</dt>
-          <dd ng-if="instance.launchTime">{{instance.launchTime}}</dd>
-        </dl>
-      </collapsible-section>
-    </div>
     <div>
       <div class="actions">
         <div class="dropdown" uib-dropdown dropdown-append-to-body>
@@ -85,6 +56,35 @@
           </ul>
         </div>
       </div>
+    </div>
+    <div class="content" ng-if="!state.loading">
+      <collapsible-section heading="Instance Information" expanded="true">
+        <dl class="dl-horizontal dl-flex">
+          <dt ng-if="instance.availabilityZone">AZ</dt>
+          <dd ng-if="instance.availabilityZone">{{instance.availabilityZone}}</dd>
+
+          <dt ng-if="instance.type">Type</dt>
+          <dd ng-if="instance.type">{{instance.type}}</dd>
+
+          <dt ng-if="instance.serverGroup">Server Group</dt>
+          <dd ng-if="instance.serverGroup">{{instance.serverGroup}}</dd>
+
+          <dt ng-if="instance.healthState">Health</dt>
+          <dd ng-if="instance.healthState">{{instance.spotHealthStatus}}</dd>
+
+          <dt ng-if="instance.lifecycle">Lifecycle</dt>
+          <dd ng-if="instance.lifecycle">{{instance.lifecycle}}</dd>
+
+          <dt ng-if="instance.publicIp">Public IP</dt>
+          <dd ng-if="instance.publicIp">{{instance.publicIp}}</dd>
+
+          <dt ng-if="instance.privateIp">Private IP</dt>
+          <dd ng-if="instance.privateIp">{{instance.privateIp}}</dd>
+
+          <dt ng-if="instance.launchTime">Launched</dt>
+          <dd ng-if="instance.launchTime">{{instance.launchTime}}</dd>
+        </dl>
+      </collapsible-section>
     </div>
   </div>
 </div>
