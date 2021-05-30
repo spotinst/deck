@@ -43,8 +43,7 @@ module(SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER, [UIROUTER_ANGULARJS, A
       function retrieveInstance() {
         let instanceSummary, account, region;
         if (!$scope.application.serverGroups) {
-          // standalone instance
-          instanceSummary = { id: instance.instanceId }; // terminate call expects `id` to be populated
+          instanceSummary = {};
           account = instance.account;
           region = instance.region;
         } else {
@@ -68,10 +67,10 @@ module(SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER, [UIROUTER_ANGULARJS, A
           return InstanceReader.getInstanceDetails(account, region, instance.instanceId).then((details) => {
             $scope.instance = _.defaults(instanceSummary, details);
             $scope.instance.serverGroupId = details.serverGroup;
-            $scope.baseIpAddress = instance.publicIp || instance.privateIp;
+            $scope.baseIpAddress = $scope.instance.publicIp || $scope.instance.privateIp;
 
             const date = new Date(details.launchTime);
-            $scope.instance.launchTime = date.toLocaleString();
+            $scope.instance.launchTimeAsDate = date.toLocaleString();
 
             if ($scope.instance.type) {
               $scope.instance.type = $scope.instance.type.toLowerCase().replace('_', '.');

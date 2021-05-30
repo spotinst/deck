@@ -82,7 +82,7 @@
           <dd ng-if="instance.privateIp">{{instance.privateIp}}</dd>
 
           <dt ng-if="instance.launchTime">Launched</dt>
-          <dd ng-if="instance.launchTime">{{instance.launchTime}}</dd>
+          <dd ng-if="instance.launchTime">{{instance.launchTimeAsDate}}</dd>
         </dl>
       </collapsible-section>
       <instance-links
