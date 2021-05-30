@@ -13,7 +13,6 @@ export interface IInstanceMultiOutputLog {
 
 export class InstanceReader {
   public static getInstanceDetails(account: string, region: string, id: string): PromiseLike<IInstance> {
-    // debugger;
     return REST('/instances').path(account, region, id).get();
   }
 

@@ -29,7 +29,6 @@ export interface LinkSection {
 }
 
 export const InstanceLinks = ({ address, application, instance, moniker, environment }: IInstanceLinksProps) => {
-  // debugger;
   const port = _.get(application, 'attributes.instancePort', SETTINGS.defaultInstancePort) || 80;
   const linkSections = _.cloneDeep(
     _.get(application, 'attributes.instanceLinks', SETTINGS.defaultInstanceLinks) || [],
