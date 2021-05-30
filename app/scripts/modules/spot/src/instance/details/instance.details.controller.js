@@ -4,26 +4,20 @@ import UIROUTER_ANGULARJS from '@uirouter/angularjs';
 import { module } from 'angular';
 import ANGULAR_UI_BOOTSTRAP from 'angular-ui-bootstrap';
 
-import { INSTANCE_WRITE_SERVICE } from '@spinnaker/core';
-import { ConfirmationModalService, INSTANCE_WRITE_SERVICE, InstanceReader } from '@spinnaker/core';
-import UIROUTER_ANGULARJS from '@uirouter/angularjs';
-import _ from 'lodash';
+import { ConfirmationModalService, InstanceWriter, InstanceReader } from '@spinnaker/core';
+import _, { capitalize } from 'lodash';
 
 export const SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER = 'spinnaker.spot.instance.details.controller';
 export const name = SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER; // for backwards compatibility
-module(SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER, [UIROUTER_ANGULARJS, INSTANCE_WRITE_SERVICE], [
-  UIROUTER_ANGULARJS,
-  ANGULAR_UI_BOOTSTRAP /*, INSTANCE_WRITE_SERVICE*/,
-]).controller(
+module(SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER, [UIROUTER_ANGULARJS, ANGULAR_UI_BOOTSTRAP]  ).controller(
   'spotInstanceDetailsCtrl',
   [
     '$scope',
     '$state',
     '$q',
-    'instanceWriter',
     'app',
     'instance',
-    function($scope, $state, $q, instanceWriter, app, instance) {
+    function($scope, $state, $q, app, instance) {
       $scope.application = app;
 
       const initialize = app.isStandalone
@@ -35,6 +29,11 @@ module(SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER, [UIROUTER_ANGULARJS, I
           app.serverGroups.onRefresh($scope, retrieveInstance);
         }
       });
+
+      const lifeCycleDict = {
+        SPOT: { label: 'Spot'},
+        OD: { label: 'OD'},
+      };
 
       function retrieveInstance() {
         let instanceSummary, account, region;
@@ -65,6 +64,10 @@ module(SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER, [UIROUTER_ANGULARJS, I
             const date = new Date(details.launchTime);
 
             $scope.instance.launchTime = date.toLocaleString();
+            $scope.instance.type = $scope.instance.type.toLowerCase().replace('_','.');
+            const healthStatusLowerCase = details.spotHealthStatus.toLowerCase();
+            $scope.instance.lifecycle = lifeCycleDict[$scope.instance.lifecycle].label;
+            $scope.instance.spotHealthStatus = capitalize(healthStatusLowerCase);
           });
         }
       }
@@ -87,7 +90,7 @@ module(SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER, [UIROUTER_ANGULARJS, I
 
           params.elastiGroup = instance.serverGroupId;
 
-          return instanceWriter.terminateInstance(instance, app, params);
+          return InstanceWriter.terminateInstance(instance, app, params);
         };
 
         ConfirmationModalService.confirm({
@@ -117,7 +120,7 @@ module(SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER, [UIROUTER_ANGULARJS, I
           params.elastiGroup = instance.serverGroupId;
           params.instanceIds = [instance.id];
 
-          return instanceWriter.terminateInstanceAndShrinkServerGroup(instance, app, params);
+          return InstanceWriter.terminateInstanceAndShrinkServerGroup(instance, app, params);
         };
 
         ConfirmationModalService.confirm({
