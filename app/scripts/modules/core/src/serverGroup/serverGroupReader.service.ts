@@ -37,4 +37,33 @@ export class ServerGroupReader {
       .query({ includeDetails: 'false' })
       .get();
   }
+
+  public static getElastilogs(
+    serverGroup: any,
+    elastigroupId: string,
+    period: string,
+    severity: string,
+  ): PromiseLike<any[]> {
+    return REST('/applications')
+      .path(
+        serverGroup.app,
+        'clusters',
+        serverGroup.account,
+        serverGroup.cluster,
+        'serverGroups',
+        serverGroup.name,
+        'elastilogs',
+      )
+      .query({
+        elastigroupId: elastigroupId,
+        period: period,
+        severity: severity,
+        provider: serverGroup.cloudProvider,
+      })
+      .get()
+      .catch((error: any): any[] => {
+        $log.error(error, 'error retrieving elastilogs');
+        return [];
+      });
+  }
 }
