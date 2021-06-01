@@ -69,9 +69,6 @@ module(SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER, [UIROUTER_ANGULARJS, A
             $scope.instance.serverGroupId = details.serverGroup;
             $scope.baseIpAddress = $scope.instance.publicIp || $scope.instance.privateIp;
 
-            const date = new Date(details.launchTime);
-            $scope.instance.launchTimeAsDate = date.toLocaleString();
-
             if ($scope.instance.type) {
               $scope.instance.type = $scope.instance.type.toLowerCase().replace('_', '.');
             }
