@@ -37,7 +37,7 @@ module(SPOT_INSTANCE_DETAILS_INSTANCE_DETAILS_CONTROLLER, [UIROUTER_ANGULARJS, A
 
       const lifeCycleDict = {
         SPOT: { label: 'Spot' },
-        OD: { label: 'OD' },
+        ON_DEMAND: { label: 'OD' },
       };
 
       function retrieveInstance() {
