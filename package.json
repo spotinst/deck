@@ -2,7 +2,7 @@
   "main": "./dist/bundle.js",
   "name": "@spotinst/spinnaker-deck",
   "description": "Spinnaker-Deck service, forked with support to Spotinst",
-  "version": "126.1.2",
+  "version": "126.1.3",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
