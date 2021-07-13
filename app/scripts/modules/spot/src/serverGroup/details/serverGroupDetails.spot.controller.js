@@ -287,20 +287,6 @@ module(SPOT_SERVERGROUP_DETAILS_SERVERGROUPDETAILS_CONTROLLER, [UIROUTER_ANGULAR
         ConfirmationModalService.confirm(confirmationModalParams);
       };
 
-      //      this.cloneServerGroup = serverGroup => {
-      //        $uibModal.open({
-      //          templateUrl: require('../configure/wizard/serverGroupWizard.html'),
-      //          controller: 'spotCloneServerGroupCtrl as ctrl',
-      //          size: 'lg',
-      //          resolve: {
-      //            title: () => 'Clone ' + serverGroup.name,
-      //            application: () => app,
-      //            serverGroupCommand: () =>
-      //                     spotServerGroupCommandBuilder.buildServerGroupCommandFromExisting(app, serverGroup),
-      //          },
-      //        });
-      //      };
-
       this.disableServerGroup = () => {
         const serverGroup = this.serverGroup;
 
